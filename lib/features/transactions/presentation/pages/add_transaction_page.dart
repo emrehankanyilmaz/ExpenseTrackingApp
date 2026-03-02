@@ -31,9 +31,7 @@ class AddTransactionPage extends StatelessWidget {
         ),
       ),
       body: _AddTransactionBody(
-        amountController: amountController,
-        descController: descController,
-      ),
+          amountController: amountController, descController: descController),
     );
   }
 }
