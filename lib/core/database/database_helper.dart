@@ -16,6 +16,7 @@ class DatabaseHelper {
   Future<Database> _initDB(String fileName) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, fileName);
+
     return await openDatabase(
       path,
       version: 1,
@@ -46,7 +47,7 @@ class DatabaseHelper {
           ON DELETE CASCADE ON UPDATE CASCADE
       )
     ''');
-    final defaultCategories = [
+    /*final defaultCategories = [
       {'name': 'Market', 'icon': '🛒', 'type': 0},
       {'name': 'Alışveriş', 'icon': '🛍️', 'type': 0},
       {'name': 'Ulaşım', 'icon': '🚗', 'type': 0},
@@ -57,6 +58,6 @@ class DatabaseHelper {
 
     for (final cat in defaultCategories) {
       await db.insert('categories', cat);
-    }
+    }*/
   }
 }

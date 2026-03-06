@@ -6,7 +6,6 @@ class CategoryProvider extends ChangeNotifier {
   final CategoryRepository _categoryRepo = CategoryRepository();
 
   List<CategoryModel> _categories = [];
-  int selectedType = 0;
 
   List<CategoryModel> get categories => _categories;
 
@@ -16,20 +15,12 @@ class CategoryProvider extends ChangeNotifier {
   List<CategoryModel> get incomeCategories =>
       _categories.where((c) => c.type == 1).toList();
 
-  List<CategoryModel> get filteredCategories =>
-      selectedType == 0 ? expenseCategories : incomeCategories;
-
-  CategoryModel? getCategoryById(String id) {
+  CategoryModel? getCategoryById(int id) {
     try {
-      return _categories.firstWhere((c) => c.id.toString() == id);
+      return _categories.firstWhere((c) => c.id != null && c.id == id);
     } catch (_) {
       return null;
     }
-  }
-
-  void setSelectedType(int type) {
-    selectedType = type;
-    notifyListeners();
   }
 
   Future<void> loadCategories() async {
@@ -39,10 +30,10 @@ class CategoryProvider extends ChangeNotifier {
 
   Future<void> addCategory({
     required String name,
-    required String icon,
+    required String iconName,
     required int type,
   }) async {
-    await _categoryRepo.insertCategory(name, icon, type == 1);
+    await _categoryRepo.insertCategory(name, iconName, type == 1);
     await loadCategories();
   }
 

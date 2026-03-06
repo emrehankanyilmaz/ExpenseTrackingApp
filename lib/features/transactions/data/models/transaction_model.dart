@@ -1,15 +1,15 @@
 import 'package:gider_takip/core/database/base_model.dart';
 
 class TransactionModel extends BaseModel {
-  final String id;
+  final int? id;
   final int type;
-  final String categoryId;
+  final int categoryId;
   final double amount;
   final DateTime transactionDate;
   final String description;
 
   TransactionModel(
-      {required this.id,
+      {this.id,
       required this.type,
       required this.categoryId,
       required this.amount,
