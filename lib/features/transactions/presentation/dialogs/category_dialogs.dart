@@ -15,8 +15,7 @@ class CategoryDialogs {
       {CategoryModel? category}) {
     final provider = context.read<CategoryProvider>();
     final nameController = TextEditingController(text: category?.name ?? '');
-    String selectedIconName =
-        category?.iconName ?? AppIcons.categoryIcons[0].name;
+    String selectedIconName = category?.iconName ?? AppIcons.values[0].name;
     int selectedType = category?.type ?? 0;
 
     showDialog(
@@ -232,7 +231,8 @@ class IconPicker extends StatelessWidget {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: AppIcons.categoryIcons.map((categoryIcon) {
+          //burası değişti
+          children: AppIcons.values.map((categoryIcon) {
             final isSelected = selectedIconName == categoryIcon.name;
             return GestureDetector(
               onTap: () => onIconSelected(categoryIcon.name),

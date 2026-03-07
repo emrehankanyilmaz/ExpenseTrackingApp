@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/constants/app_icons_constants.dart';
 
 class IconContainerWidget extends StatelessWidget {
-  final CategoryIcon categoryIcon;
+  final AppIcons categoryIcon;
   final double size;
   final double iconSize;
 

@@ -83,7 +83,8 @@ class TransactionInputWidget extends StatelessWidget {
               child: Row(
                 children: [
                   IconContainerWidget(
-                    categoryIcon: AppIcons.getByName(cat.iconName),
+                    //burası değişti
+                    categoryIcon: AppIcons.fromName(cat.iconName),
                     size: 28,
                     iconSize: 18,
                   ),

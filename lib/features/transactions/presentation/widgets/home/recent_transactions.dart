@@ -33,7 +33,7 @@ class RecentTransactions extends StatelessWidget {
         ),
         ...transactionProvider.recentTransactions.map((t) {
           final category = categoryProvider.getCategoryById(t.categoryId);
-          final categoryIcon = AppIcons.getByName(category?.iconName ?? '');
+          final categoryIcon = AppIcons.fromName(category?.iconName ?? '');
           return Container(
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(12),

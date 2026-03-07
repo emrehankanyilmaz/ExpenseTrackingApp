@@ -20,7 +20,8 @@ class CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryIcon = AppIcons.getByName(category.iconName);
+    //burası değişti
+    final categoryIcon = AppIcons.fromName(category.iconName);
     final isIncome = category.type == 1;
 
     return Padding(
