@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
-import '../../constants/days_constants.dart';
+import '../../constants/days_months_constants.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/category_model.dart';
 import '../../data/repositories/transaction_repository.dart';
 
 class TransactionProvider extends ChangeNotifier {
   final TransactionRepository _transactionRepo = TransactionRepository();
-
   List<TransactionModel> _transactions = [];
-
   List<TransactionModel> get transactions => _transactions;
-
   int selectedIndex = 0;
   int selectedType = 0;
   CategoryModel? selectedCategory;
   DateTime selectedDate = DateTime.now();
+  //
+  DateTime? filterStartDate;
+  DateTime? filterEndDate;
+  double? filterMinAmount;
+  double? filterMaxAmount;
+  int? filterCategoryId;
+  int? filterType;
+  int _page = 1;
+  static const int _pageSize = 10;
+  //
 
   double get totalIncome => _transactions
       .where((t) => t.type == 1)
@@ -44,6 +51,96 @@ class TransactionProvider extends ChangeNotifier {
     }
     return result;
   }
+
+//
+  List<TransactionModel> get filteredTransactions {
+    var list = _transactions.where((t) {
+      if (filterStartDate != null &&
+          t.transactionDate.isBefore(filterStartDate!)) {
+        return false;
+      }
+      if (filterEndDate != null && t.transactionDate.isAfter(filterEndDate!)) {
+        return false;
+      }
+      if (filterMinAmount != null && t.amount < filterMinAmount!) return false;
+      if (filterMaxAmount != null && t.amount > filterMaxAmount!) return false;
+      if (filterCategoryId != null && t.categoryId != filterCategoryId) {
+        return false;
+      }
+      if (filterType != null && t.type != filterType) return false;
+      return true;
+    }).toList();
+
+    list.sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
+    return list.take(_page * _pageSize).toList();
+  }
+
+  bool get hasMore =>
+      filteredTransactions.length <
+      _transactions.where((t) {
+        if (filterStartDate != null &&
+            t.transactionDate.isBefore(filterStartDate!)) {
+          return false;
+        }
+        if (filterEndDate != null &&
+            t.transactionDate.isAfter(filterEndDate!)) {
+          return false;
+        }
+        if (filterMinAmount != null && t.amount < filterMinAmount!) {
+          return false;
+        }
+        if (filterMaxAmount != null && t.amount > filterMaxAmount!) {
+          return false;
+        }
+        if (filterCategoryId != null && t.categoryId != filterCategoryId) {
+          return false;
+        }
+        if (filterType != null && t.type != filterType) return false;
+        return true;
+      }).length;
+
+  bool get hasActiveFilter =>
+      filterStartDate != null ||
+      filterEndDate != null ||
+      filterMinAmount != null ||
+      filterMaxAmount != null ||
+      filterCategoryId != null ||
+      filterType != null;
+
+  void loadMore() {
+    _page++;
+    notifyListeners();
+  }
+
+  void applyFilter({
+    DateTime? startDate,
+    DateTime? endDate,
+    double? minAmount,
+    double? maxAmount,
+    int? categoryId,
+    int? type,
+  }) {
+    filterStartDate = startDate;
+    filterEndDate = endDate;
+    filterMinAmount = minAmount;
+    filterMaxAmount = maxAmount;
+    filterCategoryId = categoryId;
+    filterType = type;
+    _page = 1;
+    notifyListeners();
+  }
+
+  void clearFilter() {
+    filterStartDate = null;
+    filterEndDate = null;
+    filterMinAmount = null;
+    filterMaxAmount = null;
+    filterCategoryId = null;
+    filterType = null;
+    _page = 1;
+    notifyListeners();
+  }
+//
 
   void setSelectedIndex(int index) {
     selectedIndex = index;

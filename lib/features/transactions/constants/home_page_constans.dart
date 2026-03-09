@@ -10,4 +10,5 @@ abstract final class HomePageConstans {
   static const homePage = 'Ana Sayfa';
   static const budget = 'Bütçe';
   static const settings = 'Ayarlar';
+  static const allTransactions = 'İşlemler';
 }

@@ -5,6 +5,7 @@ import '../../../constants/common_constans.dart';
 import '../../../constants/home_page_constans.dart';
 import '../../pages/add_transaction_page.dart';
 import '../../pages/category_page.dart';
+import '../../pages/transaction_page.dart';
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key, required this.provider});
@@ -25,6 +26,13 @@ class BottomNavigation extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => const AddTransactionPage()),
+          );
+          return;
+        }
+        if (i == 3) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const TransactionsPage()),
           );
           return;
         }
@@ -50,7 +58,8 @@ class BottomNavigation extends StatelessWidget {
           label: '',
         ),
         const BottomNavigationBarItem(
-            icon: Icon(Icons.track_changes), label: HomePageConstans.budget),
+            icon: Icon(Icons.view_list_outlined),
+            label: HomePageConstans.allTransactions),
         const BottomNavigationBarItem(
             icon: Icon(Icons.settings), label: HomePageConstans.settings),
       ],
