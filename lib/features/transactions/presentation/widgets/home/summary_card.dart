@@ -1,16 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/app_color_constans.dart';
-import '../../../constants/common_constans.dart';
-import '../../../constants/home_page_constans.dart';
 import '../../providers/transaction_provider.dart';
 
 class SummaryCard extends StatelessWidget {
-  final TransactionProvider provider;
-
   const SummaryCard({
     super.key,
     required this.provider,
   });
+  final TransactionProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +25,7 @@ class SummaryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '${provider.netBalance >= 0 ? '' : '${CommonConstants.minus} '}${CommonConstants.currency} ${provider.netBalance.abs().toStringAsFixed(0)}',
+                '${provider.netBalance >= 0 ? '' : '${'minus'.tr()} '}${'currency'.tr()} ${provider.netBalance.abs().toStringAsFixed(0)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -54,12 +52,12 @@ class SummaryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                HomePageConstans.budgetStatus,
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                'budgetStatus'.tr(),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                '${CommonConstants.currency} ${provider.netBalance.toStringAsFixed(0)} | Kaldı',
+                '${'currency'.tr()} ${provider.netBalance.toStringAsFixed(0)} | Kaldı',
                 style: const TextStyle(color: AppColor.colorGrey, fontSize: 12),
               ),
             ],
@@ -79,7 +77,7 @@ class SummaryCard extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            '${CommonConstants.currency} ${provider.totalExpense.toStringAsFixed(0)} / ${CommonConstants.currency} ${provider.totalIncome.toStringAsFixed(0)}',
+            '${'currency'.tr()} ${provider.totalExpense.toStringAsFixed(0)} / ${'currency'.tr()} ${provider.totalIncome.toStringAsFixed(0)}',
             style: const TextStyle(color: AppColor.colorGrey, fontSize: 12),
           ),
         ],
@@ -97,16 +95,16 @@ class SummaryCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '${CommonConstants.currency} ${provider.totalIncome.toStringAsFixed(0)}',
+            '${'currency'.tr()} ${provider.totalIncome.toStringAsFixed(0)}',
             style: const TextStyle(
               color: AppColor.colorWhite,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
-          const Text(
-            CommonConstants.income,
-            style: TextStyle(color: AppColor.colorWhite70, fontSize: 12),
+          Text(
+            'income'.tr(),
+            style: const TextStyle(color: AppColor.colorWhite70, fontSize: 12),
           ),
         ],
       ),
@@ -123,16 +121,16 @@ class SummaryCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '${CommonConstants.minus} ${CommonConstants.currency} ${provider.totalExpense.toStringAsFixed(0)}',
+            '${'minus'.tr()} ${'currency'.tr()} ${provider.totalExpense.toStringAsFixed(0)}',
             style: const TextStyle(
               color: AppColor.colorWhite,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
           ),
-          const Text(
-            CommonConstants.expense,
-            style: TextStyle(color: AppColor.colorWhite70, fontSize: 12),
+          Text(
+            'expense'.tr(),
+            style: const TextStyle(color: AppColor.colorWhite70, fontSize: 12),
           ),
         ],
       ),

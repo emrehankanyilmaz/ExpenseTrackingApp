@@ -1,6 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:gider_takip/features/transactions/constants/category_constants.dart';
-
 import '../../../constants/app_color_constans.dart';
 
 class AddCategoryButton extends StatelessWidget {
@@ -19,14 +18,14 @@ class AddCategoryButton extends StatelessWidget {
             color: AppColor.colorWhite,
             borderRadius: BorderRadius.circular(14),
           ),
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.add, color: AppColor.colorBlue),
-              SizedBox(width: 6),
+              const Icon(Icons.add, color: AppColor.colorBlue),
+              const SizedBox(width: 6),
               Text(
-                CategoryConstants.addCategory,
-                style: TextStyle(
+                'addCategory'.tr(),
+                style: const TextStyle(
                   fontSize: 20,
                   color: AppColor.colorBlue,
                   fontWeight: FontWeight.w600,

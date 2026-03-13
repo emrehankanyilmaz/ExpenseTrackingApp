@@ -33,11 +33,10 @@ enum AppIcons {
   water('water', FluentIcons.drop_24_filled, Color(0xFF29B6F6)),
   internet('internet', FluentIcons.wifi_1_24_filled, Color(0xFF5C6BC0));
 
+  const AppIcons(this.iconName, this.icon, this.color);
   final String iconName;
   final IconData icon;
   final Color color;
-
-  const AppIcons(this.iconName, this.icon, this.color);
 
   static AppIcons fromName(String name) {
     return AppIcons.values.firstWhere(

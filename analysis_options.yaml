@@ -23,6 +23,14 @@ linter:
   rules:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    # Stil ve okunabilirlik kuralları
+    avoid_print: true           # print() kullanımını önler
+    prefer_const_constructors: true  # Mümkünse const kullan
+    sort_constructors_first: true     # Constructor'lar sınıf başında olsun
+
+analyzer:
+  exclude:
+    - build/**
 
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

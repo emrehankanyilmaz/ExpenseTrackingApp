@@ -1,5 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:gider_takip/features/transactions/constants/common_constans.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_color_constans.dart';
 import '../dialogs/category_dialogs.dart';
@@ -20,9 +20,9 @@ class CategoryPage extends StatelessWidget {
         backgroundColor: AppColor.colorGrey100,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          CommonConstants.categories,
-          style: TextStyle(
+        title: Text(
+          'categories'.tr(),
+          style: const TextStyle(
               fontWeight: FontWeight.bold, color: AppColor.colorBlack),
         ),
       ),

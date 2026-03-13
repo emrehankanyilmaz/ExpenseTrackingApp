@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_color_constans.dart';
-import '../../constants/home_page_constans.dart';
 import '../providers/transaction_provider.dart';
 import '../widgets/home/bottom_navigation.dart';
 import '../widgets/home/recent_transactions.dart';
@@ -29,13 +30,7 @@ class _HomeView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColor.colorWhite,
         centerTitle: true,
-        title: const Text(
-          HomePageConstans.expenseTracking,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColor.colorBlack,
-              fontSize: 20),
-        ),
+        title: BaseText.headlineLarge(context, data: 'appName'.tr()),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

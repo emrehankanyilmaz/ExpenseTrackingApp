@@ -1,10 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/transaction_provider.dart';
 import '../../../constants/app_color_constans.dart';
-import '../../../constants/common_constans.dart';
-import '../../../constants/home_page_constans.dart';
 import '../../pages/add_transaction_page.dart';
 import '../../pages/category_page.dart';
+import '../../pages/transaction_page.dart';
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key, required this.provider});
@@ -28,17 +28,24 @@ class BottomNavigation extends StatelessWidget {
           );
           return;
         }
+        if (i == 3) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const TransactionPage()),
+          );
+          return;
+        }
         provider.setSelectedIndex(i);
       },
       type: BottomNavigationBarType.fixed,
       selectedItemColor: AppColor.colorBlue,
       unselectedItemColor: AppColor.colorGrey,
       items: [
-        const BottomNavigationBarItem(
-            icon: Icon(Icons.home), label: HomePageConstans.homePage),
-        const BottomNavigationBarItem(
-            icon: Icon(Icons.category_outlined),
-            label: CommonConstants.categories),
+        BottomNavigationBarItem(
+            icon: const Icon(Icons.home), label: 'homePage'.tr()),
+        BottomNavigationBarItem(
+            icon: const Icon(Icons.category_outlined),
+            label: 'categories'.tr()),
         BottomNavigationBarItem(
           icon: Container(
             width: 48,
@@ -49,10 +56,11 @@ class BottomNavigation extends StatelessWidget {
           ),
           label: '',
         ),
-        const BottomNavigationBarItem(
-            icon: Icon(Icons.track_changes), label: HomePageConstans.budget),
-        const BottomNavigationBarItem(
-            icon: Icon(Icons.settings), label: HomePageConstans.settings),
+        BottomNavigationBarItem(
+            icon: const Icon(Icons.view_list_outlined),
+            label: 'transactions'.tr()),
+        BottomNavigationBarItem(
+            icon: const Icon(Icons.settings), label: 'settings'.tr()),
       ],
     );
   }

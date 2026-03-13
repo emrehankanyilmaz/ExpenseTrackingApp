@@ -1,34 +1,25 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:gider_takip/core/database/base_model.dart';
 
-class CategoryModel extends BaseModel {
-  final int? id;
-  final String name;
-  final String iconName;
-  final int type;
+part 'category_model.g.dart';
 
+@JsonSerializable()
+class CategoryModel extends BaseModel {
   CategoryModel({
-    this.id,
     required this.name,
     required this.iconName,
     required this.type,
+    this.id,
   });
 
-  factory CategoryModel.fromMap(Map<String, dynamic> map) {
-    return CategoryModel(
-      id: map['id'],
-      name: map['name'],
-      iconName: map['icon'],
-      type: map['type'],
-    );
-  }
+  factory CategoryModel.fromMap(Map<String, dynamic> map) =>
+      _$CategoryModelFromJson(map);
+  final String name;
+  @JsonKey(name: 'icon')
+  final String iconName;
+  final int type;
+  final int? id;
 
   @override
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'icon': iconName,
-      'type': type,
-    };
-  }
+  Map<String, dynamic> toMap() => _$CategoryModelToJson(this);
 }
