@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class TransactionRow extends StatelessWidget {
-  final String label;
-  final Widget child;
-
   const TransactionRow({
     super.key,
     required this.label,
     required this.child,
   });
+  final String label;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

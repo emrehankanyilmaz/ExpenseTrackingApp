@@ -1,8 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gider_takip/features/transactions/constants/app_icons_constants.dart';
-import 'package:gider_takip/features/transactions/constants/common_constans.dart';
-import 'package:gider_takip/features/transactions/constants/transaction_constans.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/common/icon_container_widget.dart';
 import '../../../constants/app_color_constans.dart';
 import '../../../data/models/category_model.dart';
@@ -15,16 +14,6 @@ enum TransactionInputType {
 }
 
 class TransactionInputWidget extends StatelessWidget {
-  final TransactionInputType type;
-
-  final List<CategoryModel>? categories;
-  final CategoryModel? selectedCategory;
-  final ValueChanged<CategoryModel?>? onCategoryChanged;
-  final TextEditingController? amountController;
-  final DateTime? selectedDate;
-  final VoidCallback? onDateTap;
-  final TextEditingController? descriptionController;
-
   const TransactionInputWidget({
     super.key,
     required this.type,
@@ -36,6 +25,14 @@ class TransactionInputWidget extends StatelessWidget {
     this.onDateTap,
     this.descriptionController,
   });
+  final TransactionInputType type;
+  final List<CategoryModel>? categories;
+  final CategoryModel? selectedCategory;
+  final ValueChanged<CategoryModel?>? onCategoryChanged;
+  final TextEditingController? amountController;
+  final DateTime? selectedDate;
+  final VoidCallback? onDateTap;
+  final TextEditingController? descriptionController;
 
   String _formatDate(DateTime date) {
     return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
@@ -68,9 +65,9 @@ class TransactionInputWidget extends StatelessWidget {
         child: DropdownButton<CategoryModel>(
           value: selectedCategory,
           isExpanded: true,
-          hint: const Text(
-            TransactionConstants.select,
-            style: TextStyle(
+          hint: Text(
+            'select'.tr(),
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 17,
               color: AppColor.colorBlack,
@@ -83,7 +80,6 @@ class TransactionInputWidget extends StatelessWidget {
               child: Row(
                 children: [
                   IconContainerWidget(
-                    //burası değişti
                     categoryIcon: AppIcons.fromName(cat.iconName),
                     size: 28,
                     iconSize: 18,
@@ -111,9 +107,9 @@ class TransactionInputWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text(
-            "${CommonConstants.currency} ",
-            style: TextStyle(
+          Text(
+            "currency".tr(),
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 19,
             ),
@@ -126,14 +122,14 @@ class TransactionInputWidget extends StatelessWidget {
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]')),
               ],
-              decoration: const InputDecoration(
-                hintStyle: TextStyle(
+              decoration: InputDecoration(
+                hintStyle: const TextStyle(
                   color: AppColor.colorBlack,
                   fontWeight: FontWeight.bold,
                   fontSize: 19,
                 ),
                 border: InputBorder.none,
-                hintText: TransactionConstants.moneyHintText,
+                hintText: 'moneyHintText'.tr(),
               ),
             ),
           ),
@@ -186,13 +182,13 @@ class TransactionInputWidget extends StatelessWidget {
         controller: descriptionController,
         maxLines: null,
         expands: true,
-        decoration: const InputDecoration(
-          hintStyle: TextStyle(
+        decoration: InputDecoration(
+          hintStyle: const TextStyle(
             fontStyle: FontStyle.italic,
             color: AppColor.colorGrey,
           ),
           border: InputBorder.none,
-          hintText: TransactionConstants.descriptionHintText,
+          hintText: 'descriptionHintText'.tr(),
         ),
       ),
     );

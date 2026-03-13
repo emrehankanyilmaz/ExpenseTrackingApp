@@ -1,18 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:gider_takip/features/transactions/constants/common_constans.dart';
-
 import '../../../constants/app_color_constans.dart';
 import '../../helper/transaction_helper.dart';
 
 class TransactionSaveButton extends StatelessWidget {
-  final TextEditingController amountController;
-  final TextEditingController descController;
-
   const TransactionSaveButton({
     super.key,
     required this.amountController,
     required this.descController,
   });
+  final TextEditingController amountController;
+  final TextEditingController descController;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +31,9 @@ class TransactionSaveButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: const Text(
-            CommonConstants.save,
-            style: TextStyle(
+          child: Text(
+            'save'.tr(),
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AppColor.colorWhite,

@@ -1,8 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/category/category_list_item.dart';
-
 import '../../../constants/app_color_constans.dart';
-import '../../../constants/category_constants.dart';
 import '../../../data/models/category_model.dart';
 
 class CategoryList extends StatelessWidget {
@@ -25,10 +24,10 @@ class CategoryList extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
       child: categories.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
-                CategoryConstants.noCategories,
-                style: TextStyle(color: AppColor.colorGrey),
+                'noCategories'.tr(),
+                style: const TextStyle(color: AppColor.colorGrey),
               ),
             )
           : ListView.separated(

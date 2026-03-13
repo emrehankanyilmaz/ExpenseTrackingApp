@@ -10,12 +10,18 @@ dependencies:
   flutter:
     sdk: flutter
 
+  
   provider: ^6.1.1
   sqflite: ^2.3.2
   path: ^1.9.0
   uuid: ^4.3.3
-  intl: ^0.19.0
+  intl: any
   fluentui_system_icons: ^1.1.273
+  flutter_slidable: ^4.0.3
+  easy_localization: ^3.0.8
+  json_annotation: ^4.11.0
+  build_runner: ^2.12.2
+  json_serializable: ^6.13.0
 
 dev_dependencies:
   flutter_test:
@@ -23,4 +29,6 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
+  assets:
+    - assets/translations/
   uses-material-design: true

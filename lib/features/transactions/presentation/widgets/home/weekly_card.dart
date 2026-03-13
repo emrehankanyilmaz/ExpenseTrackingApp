@@ -1,8 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/constants/app_color_constans.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
 import 'package:provider/provider.dart';
-import '../../../constants/common_constans.dart';
-import '../../../constants/home_page_constans.dart';
 import '../../providers/transaction_provider.dart';
 
 class WeeklyCard extends StatelessWidget {
@@ -29,25 +29,15 @@ class WeeklyCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                HomePageConstans.expenses,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
+              BaseText.titleLarge(context, data: 'expenses'.tr()),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColor.colorGrey300),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  HomePageConstans.thisWeek,
-                  style: TextStyle(fontSize: 12),
-                ),
-              ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColor.colorGrey300),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: BaseText.labelMedium(context, data: 'thisWeek'.tr())),
             ],
           ),
           const SizedBox(height: 16),
@@ -72,12 +62,11 @@ class WeeklyCard extends StatelessWidget {
                             color: AppColor.colorBlue,
                             borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Text(
-                            '${CommonConstants.currency}${e.value.toStringAsFixed(0)}',
-                            style: const TextStyle(
-                              color: AppColor.colorWhite,
-                              fontSize: 10,
-                            ),
+                          child: BaseText.labelSmall(
+                            context,
+                            data:
+                                '${'currency'.tr()}${e.value.toStringAsFixed(0)}',
+                            color: AppColor.colorWhite,
                           ),
                         ),
                       const SizedBox(height: 4),

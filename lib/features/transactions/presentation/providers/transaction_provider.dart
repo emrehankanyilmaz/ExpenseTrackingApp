@@ -12,7 +12,7 @@ class TransactionProvider extends ChangeNotifier {
   int selectedType = 0;
   CategoryModel? selectedCategory;
   DateTime selectedDate = DateTime.now();
-  //
+
   DateTime? filterStartDate;
   DateTime? filterEndDate;
   double? filterMinAmount;
@@ -21,7 +21,6 @@ class TransactionProvider extends ChangeNotifier {
   int? filterType;
   int _page = 1;
   static const int _pageSize = 10;
-  //
 
   double get totalIncome => _transactions
       .where((t) => t.type == 1)
@@ -52,7 +51,6 @@ class TransactionProvider extends ChangeNotifier {
     return result;
   }
 
-//
   List<TransactionModel> get filteredTransactions {
     var list = _transactions.where((t) {
       if (filterStartDate != null &&
@@ -107,6 +105,20 @@ class TransactionProvider extends ChangeNotifier {
       filterCategoryId != null ||
       filterType != null;
 
+  Future<void> updateTransaction(TransactionModel transaction) async {
+    await _transactionRepo.update(transaction.id!, transaction);
+    await loadTransactions();
+  }
+
+  Future<DateTime?> pickDate(BuildContext context, {DateTime? initial}) async {
+    return await showDatePicker(
+      context: context,
+      initialDate: initial ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+  }
+
   void loadMore() {
     _page++;
     notifyListeners();
@@ -129,18 +141,6 @@ class TransactionProvider extends ChangeNotifier {
     _page = 1;
     notifyListeners();
   }
-
-  void clearFilter() {
-    filterStartDate = null;
-    filterEndDate = null;
-    filterMinAmount = null;
-    filterMaxAmount = null;
-    filterCategoryId = null;
-    filterType = null;
-    _page = 1;
-    notifyListeners();
-  }
-//
 
   void setSelectedIndex(int index) {
     selectedIndex = index;

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/constants/app_icons_constants.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/category_provider.dart';
@@ -5,8 +6,7 @@ import 'package:gider_takip/features/transactions/presentation/providers/transac
 import 'package:gider_takip/features/transactions/presentation/widgets/common/icon_container_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_color_constans.dart';
-import '../../../constants/common_constans.dart';
-import '../../../constants/home_page_constans.dart';
+import '../../pages/transaction_page.dart';
 
 class RecentTransactions extends StatelessWidget {
   const RecentTransactions({super.key});
@@ -22,12 +22,18 @@ class RecentTransactions extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(HomePageConstans.lastTransactions,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Text('lastTransactions'.tr(),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             TextButton(
-              onPressed: () {},
-              child: const Text(HomePageConstans.seeAll,
-                  style: TextStyle(color: AppColor.colorBlue)),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const TransactionPage()),
+                );
+              },
+              child: Text('seeAll'.tr(),
+                  style: const TextStyle(color: AppColor.colorBlue)),
             ),
           ],
         ),
@@ -52,7 +58,7 @@ class RecentTransactions extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(category?.name ?? HomePageConstans.unknown,
+                      Text(category?.name ?? 'unknownCategory'.tr(),
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                       if (t.description.isNotEmpty)
                         Text(t.description,
@@ -65,7 +71,7 @@ class RecentTransactions extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${t.type == 0 ? '${CommonConstants.minus} ' : ''}${CommonConstants.currency} ${t.amount.toStringAsFixed(0)}',
+                      '${t.type == 0 ? '${'minus'.tr()} ' : ''}${'currency'.tr()} ${t.amount.toStringAsFixed(0)}',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: t.type == 0

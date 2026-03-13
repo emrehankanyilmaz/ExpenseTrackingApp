@@ -1,5 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:gider_takip/features/transactions/constants/transaction_constans.dart';
+import 'package:gider_takip/features/transactions/presentation/services/snackbar_services.dart';
 import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
 
@@ -22,15 +23,11 @@ class TransactionHelper {
   }) async {
     final provider = context.read<TransactionProvider>();
     if (amount.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(TransactionConstants.enterAmount)),
-      );
+      SnackbarService.show(message: 'enterAmount'.tr(), isError: true);
       return;
     }
     if (provider.selectedCategory == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(TransactionConstants.selectCategory)),
-      );
+      SnackbarService.show(message: 'selectCategory'.tr(), isError: true);
       return;
     }
     final success = await provider.addTransaction(

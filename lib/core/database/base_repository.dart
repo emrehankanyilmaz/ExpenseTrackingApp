@@ -2,9 +2,8 @@ import 'package:gider_takip/core/database/base_model.dart';
 import 'package:gider_takip/core/database/database_helper.dart';
 
 abstract class BaseRepository<T extends BaseModel> {
-  final String tableName;
-
   BaseRepository(this.tableName);
+  final String tableName;
 
   Future<int> insert(T model) async {
     final db = await DatabaseHelper.instance.database;

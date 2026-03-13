@@ -1,8 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-
 import '../../../constants/app_color_constans.dart';
 import '../../../constants/app_icons_constants.dart';
-import '../../../constants/common_constans.dart';
 import '../../../data/models/category_model.dart';
 import '../common/icon_container_widget.dart';
 
@@ -20,7 +19,6 @@ class CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //burası değişti
     final categoryIcon = AppIcons.fromName(category.iconName);
     final isIncome = category.type == 1;
 
@@ -42,7 +40,7 @@ class CategoryListItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  isIncome ? CommonConstants.income : CommonConstants.expense,
+                  isIncome ? 'income'.tr() : 'expense'.tr(),
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,

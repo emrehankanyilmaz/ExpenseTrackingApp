@@ -1,8 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:gider_takip/features/transactions/constants/app_icons_constants.dart';
-import 'package:gider_takip/features/transactions/constants/category_constants.dart';
-import 'package:gider_takip/features/transactions/constants/common_constans.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/common/icon_container_widget.dart';
 import '../../constants/app_color_constans.dart';
 import '../providers/category_provider.dart';
@@ -22,9 +21,8 @@ class CategoryDialogs {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setState) => AlertDialog(
-          title: Text(category == null
-              ? CategoryConstants.addCategory
-              : CategoryConstants.editCategory),
+          title:
+              Text(category == null ? 'addCategory'.tr() : 'editCategory'.tr()),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -47,7 +45,7 @@ class CategoryDialogs {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: const Text(CommonConstants.cancel),
+              child: Text('cancel'.tr()),
             ),
             ElevatedButton(
               onPressed: () => _saveCategory(
@@ -58,7 +56,7 @@ class CategoryDialogs {
                 iconName: selectedIconName,
                 type: selectedType,
               ),
-              child: const Text(CommonConstants.save),
+              child: Text('save'.tr()),
             ),
           ],
         ),
@@ -70,12 +68,12 @@ class CategoryDialogs {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text(CategoryConstants.deleteCategory),
-        content: const Text(CategoryConstants.deleteConfirmation),
+        title: Text('deleteCategory'.tr()),
+        content: Text('deleteConfirmation'.tr()),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text(CommonConstants.cancel),
+            child: Text('cancel'.tr()),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: AppColor.colorRed),
@@ -83,9 +81,9 @@ class CategoryDialogs {
               await context.read<CategoryProvider>().deleteCategory(id);
               if (ctx.mounted) Navigator.pop(ctx);
             },
-            child: const Text(
-              CommonConstants.delete,
-              style: TextStyle(color: AppColor.colorWhite),
+            child: Text(
+              'delete'.tr(),
+              style: const TextStyle(color: AppColor.colorWhite),
             ),
           ),
         ],
@@ -133,12 +131,12 @@ class TypeToggle extends StatelessWidget {
       child: Row(
         children: [
           TypeToggleButton(
-              label: CommonConstants.expense,
+              label: 'expense'.tr(),
               type: 0,
               selectedType: selectedType,
               onTap: () => onTypeChanged(0)),
           TypeToggleButton(
-              label: CommonConstants.income,
+              label: 'income'.tr(),
               type: 1,
               selectedType: selectedType,
               onTap: () => onTypeChanged(1)),
@@ -199,7 +197,7 @@ class NameField extends StatelessWidget {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        hintText: CategoryConstants.categoryName,
+        hintText: 'categoryName'.tr(),
         filled: true,
         fillColor: AppColor.colorGrey100,
         border: OutlineInputBorder(
@@ -225,13 +223,12 @@ class IconPicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(CommonConstants.selectIcon,
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('selectIcon'.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          //burası değişti
           children: AppIcons.values.map((categoryIcon) {
             final isSelected = selectedIconName == categoryIcon.name;
             return GestureDetector(
