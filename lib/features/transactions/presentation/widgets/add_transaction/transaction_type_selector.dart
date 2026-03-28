@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import '../../../constants/app_color_constans.dart';
 import '../../providers/transaction_provider.dart';
 
@@ -15,8 +16,12 @@ class TransactionTypeSelector extends StatelessWidget {
     return Align(
       alignment: Alignment.centerRight,
       child: ToggleButtons(
-        isSelected: [provider.selectedType == 0, provider.selectedType == 1],
-        onPressed: provider.setSelectedType,
+        isSelected: [
+          provider.selectedType == CategoryType.expense,
+          provider.selectedType == CategoryType.income
+        ],
+        onPressed: (index) => provider.setSelectedType(
+            index == 0 ? CategoryType.expense : CategoryType.income),
         borderRadius: BorderRadius.circular(10),
         selectedColor: AppColor.colorWhite,
         fillColor: AppColor.colorRed,

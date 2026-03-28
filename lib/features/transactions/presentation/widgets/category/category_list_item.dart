@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import '../../../constants/app_color_constans.dart';
 import '../../../constants/app_icons_constants.dart';
 import '../../../data/models/category_model.dart';
@@ -20,7 +21,7 @@ class CategoryListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categoryIcon = AppIcons.fromName(category.iconName);
-    final isIncome = category.type == 1;
+    final isIncome = category.type == CategoryType.income;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),

@@ -46,17 +46,5 @@ class DatabaseHelper {
           ON DELETE CASCADE ON UPDATE CASCADE
       )
     ''');
-    /*final defaultCategories = [
-      {'name': 'Market', 'icon': '🛒', 'type': 0},
-      {'name': 'Alışveriş', 'icon': '🛍️', 'type': 0},
-      {'name': 'Ulaşım', 'icon': '🚗', 'type': 0},
-      {'name': 'Eğlence', 'icon': '🎮', 'type': 0},
-      {'name': 'Maaş', 'icon': '💰', 'type': 1},
-      {'name': 'Yatırım', 'icon': '📈', 'type': 1},
-    ];
-
-    for (final cat in defaultCategories) {
-      await db.insert('categories', cat);
-    }*/
   }
 }

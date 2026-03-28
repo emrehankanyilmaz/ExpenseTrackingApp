@@ -2,11 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/constants/app_color_constans.dart';
 import 'package:gider_takip/features/transactions/data/models/category_model.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import 'package:gider_takip/features/transactions/data/models/transaction_model.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/category_provider.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/transaction_provider.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/add_transaction/transaction_input_type.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/transaction/amount_field.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/transaction/date_button.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/transaction/type_chip.dart';
@@ -26,7 +28,7 @@ class EditTransactionBottomSheet extends StatefulWidget {
 
 class _EditTransactionBottomSheetState
     extends State<EditTransactionBottomSheet> {
-  late int selectedType;
+  late CategoryType selectedType;
   late DateTime selectedDate;
   late CategoryModel? selectedCategory;
   late TextEditingController amountController;
@@ -55,7 +57,7 @@ class _EditTransactionBottomSheetState
 
   List<CategoryModel> get _categories {
     final categoryProvider = context.read<CategoryProvider>();
-    return selectedType == 0
+    return selectedType == CategoryType.expense
         ? categoryProvider.expenseCategories
         : categoryProvider.incomeCategories;
   }
@@ -84,70 +86,32 @@ class _EditTransactionBottomSheetState
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
+      child: CustomContainer(
+        customBorderRadius:
+            const BorderRadius.vertical(top: Radius.circular(24)),
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BaseText.headlineSmall(context, data: 'editCategory'.tr()),
+            BaseText.headlineSmall(context, data: 'editTransaction'.tr()),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                TypeChipWidget(
-                  label: 'expense'.tr(),
-                  isSelected: selectedType == 0,
-                  color: AppColor.colorRed,
-                  onTap: () => setState(() {
-                    selectedType = 0;
-                    selectedCategory = null;
-                  }),
-                ),
-                const SizedBox(width: 8),
-                TypeChipWidget(
-                  label: 'income'.tr(),
-                  isSelected: selectedType == 1,
-                  color: AppColor.colorGreen,
-                  onTap: () => setState(() {
-                    selectedType = 1;
-                    selectedCategory = null;
-                  }),
-                ),
-              ],
+            _TypeSection(
+              selectedType: selectedType,
+              onChanged: (type) => setState(() {
+                selectedType = type;
+                selectedCategory = null;
+              }),
             ),
             const SizedBox(height: 16),
-            DropdownButtonFormField<CategoryModel>(
-              initialValue: selectedCategory,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey.shade100,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              hint: BaseText.titleLarge(
-                context,
-                data: 'select'.tr(),
-                color: AppColor.colorGrey,
-              ),
-              items: _categories
-                  .map((cat) => DropdownMenuItem(
-                        value: cat,
-                        child: Text(cat.name),
-                      ))
-                  .toList(),
+            _CategorySection(
+              categories: _categories,
+              selectedCategory: selectedCategory,
               onChanged: (cat) => setState(() => selectedCategory = cat),
             ),
             const SizedBox(height: 16),
             AmountFieldWidget(
-              hint: 'currency'.tr(),
-              controller: amountController,
-            ),
+                hint: 'currency'.tr(), controller: amountController),
             const SizedBox(height: 16),
             DateButtonWidget(
               label:
@@ -161,31 +125,95 @@ class _EditTransactionBottomSheetState
             ),
             const SizedBox(height: 16),
             TransactionInputWidget(
-              type: TransactionInputType.description,
-              descriptionController: descController,
-            ),
+                type: TransactionInputType.description,
+                descriptionController: descController),
             const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                onPressed: _save,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.colorBlue,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14)),
-                  elevation: 0,
-                ),
-                child: BaseText.titleLarge(
-                  context,
-                  data: 'save'.tr(),
-                  color: AppColor.colorWhite,
-                ),
-              ),
-            ),
+            _SaveButton(onPressed: _save),
             const SizedBox(height: 8),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TypeSection extends StatelessWidget {
+  const _TypeSection({required this.selectedType, required this.onChanged});
+  final CategoryType selectedType;
+  final void Function(CategoryType) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        TypeChipWidget(
+          label: 'expense'.tr(),
+          isSelected: selectedType == CategoryType.expense,
+          color: AppColor.colorRed,
+          onTap: () => onChanged(CategoryType.expense),
+        ),
+        const SizedBox(width: 8),
+        TypeChipWidget(
+            label: 'income'.tr(),
+            isSelected: selectedType == CategoryType.income,
+            color: AppColor.colorGreen,
+            onTap: () => onChanged(CategoryType.income)),
+      ],
+    );
+  }
+}
+
+class _CategorySection extends StatelessWidget {
+  const _CategorySection({
+    required this.categories,
+    required this.selectedCategory,
+    required this.onChanged,
+  });
+  final List<CategoryModel> categories;
+  final CategoryModel? selectedCategory;
+  final ValueChanged<CategoryModel?> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<CategoryModel>(
+      initialValue: selectedCategory,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.grey.shade100,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      hint: BaseText.titleLarge(context,
+          data: 'select'.tr(), color: AppColor.colorGrey),
+      items: categories
+          .map((cat) => DropdownMenuItem(value: cat, child: Text(cat.name)))
+          .toList(),
+      onChanged: onChanged,
+    );
+  }
+}
+
+class _SaveButton extends StatelessWidget {
+  const _SaveButton({required this.onPressed});
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColor.colorBlue,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          elevation: 0,
+        ),
+        child: BaseText.titleLarge(context,
+            data: 'save'.tr(), color: AppColor.colorWhite),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gider_takip/features/transactions/constants/app_icons_constants.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/common/icon_container_widget.dart';
 import '../../../constants/app_color_constans.dart';
 import '../../../data/models/category_model.dart';
@@ -34,77 +35,45 @@ class TransactionInputWidget extends StatelessWidget {
   final VoidCallback? onDateTap;
   final TextEditingController? descriptionController;
 
-  String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
-  }
-
   @override
   Widget build(BuildContext context) {
     switch (type) {
       case TransactionInputType.category:
-        return _buildCategory();
+        return BuildCategory(
+          categories: categories,
+          selectedCategory: selectedCategory,
+          onCategoryChanged: onCategoryChanged,
+        );
       case TransactionInputType.amount:
-        return _buildAmount();
+        return BuildAmount(
+          amountController: amountController,
+        );
       case TransactionInputType.date:
-        return _buildDate();
+        return BuildDate(
+          date: selectedDate,
+          onDateTap: onDateTap,
+        );
       case TransactionInputType.description:
-        return _buildDescription();
+        return BuildDescription(
+          descriptionController: descriptionController,
+        );
     }
   }
+}
 
-  Widget _buildCategory() {
-    return Container(
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: AppColor.colorWhite,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColor.colorGrey300),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<CategoryModel>(
-          value: selectedCategory,
-          isExpanded: true,
-          hint: Text(
-            'select'.tr(),
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 17,
-              color: AppColor.colorBlack,
-            ),
-          ),
-          icon: const Icon(Icons.keyboard_arrow_down),
-          items: (categories ?? []).map((cat) {
-            return DropdownMenuItem(
-              value: cat,
-              child: Row(
-                children: [
-                  IconContainerWidget(
-                    categoryIcon: AppIcons.fromName(cat.iconName),
-                    size: 28,
-                    iconSize: 18,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(cat.name),
-                ],
-              ),
-            );
-          }).toList(),
-          onChanged: onCategoryChanged,
-        ),
-      ),
-    );
-  }
+class BuildAmount extends StatelessWidget {
+  const BuildAmount({super.key, this.amountController});
 
-  Widget _buildAmount() {
-    return Container(
+  final TextEditingController? amountController;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainer(
       height: 48,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColor.colorWhite,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColor.colorGrey300),
-      ),
+      color: AppColor.colorWhite,
+      borderRadius: 10,
+      border: Border.all(color: AppColor.colorGrey300),
       child: Row(
         children: [
           Text(
@@ -137,25 +106,36 @@ class TransactionInputWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildDate() {
-    final date = selectedDate ?? DateTime.now();
+class BuildDate extends StatelessWidget {
+  const BuildDate({
+    super.key,
+    this.onDateTap,
+    this.date,
+  });
+  final VoidCallback? onDateTap;
+  final DateTime? date;
+  String _formatDate(DateTime date) {
+    return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onDateTap,
-      child: Container(
+      child: CustomContainer(
         height: 48,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: AppColor.colorWhite,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColor.colorGrey300),
-        ),
+        color: AppColor.colorWhite,
+        borderRadius: 10,
+        border: Border.all(color: AppColor.colorGrey300),
         child: Row(
           children: [
             const Icon(Icons.calendar_month_outlined, size: 25),
             const SizedBox(width: 8),
             Text(
-              _formatDate(date),
+              _formatDate(date ?? DateTime.now()),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 19,
@@ -168,16 +148,22 @@ class TransactionInputWidget extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildDescription() {
-    return Container(
+class BuildDescription extends StatelessWidget {
+  const BuildDescription({
+    super.key,
+    this.descriptionController,
+  });
+  final TextEditingController? descriptionController;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainer(
       height: 130,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColor.colorWhite,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColor.colorGrey300),
-      ),
+      color: AppColor.colorWhite,
+      border: Border.all(color: AppColor.colorGrey300),
       child: TextField(
         controller: descriptionController,
         maxLines: null,
@@ -189,6 +175,62 @@ class TransactionInputWidget extends StatelessWidget {
           ),
           border: InputBorder.none,
           hintText: 'descriptionHintText'.tr(),
+        ),
+      ),
+    );
+  }
+}
+
+class BuildCategory extends StatelessWidget {
+  const BuildCategory({
+    super.key,
+    this.categories,
+    this.selectedCategory,
+    this.onCategoryChanged,
+  });
+
+  final List<CategoryModel>? categories;
+  final CategoryModel? selectedCategory;
+  final ValueChanged<CategoryModel?>? onCategoryChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainer(
+      height: 48,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      color: AppColor.colorWhite,
+      borderRadius: 8,
+      border: Border.all(color: AppColor.colorGrey300),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<CategoryModel>(
+          value: selectedCategory,
+          isExpanded: true,
+          hint: Text(
+            'select'.tr(),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+              color: AppColor.colorBlack,
+            ),
+          ),
+          icon: const Icon(Icons.keyboard_arrow_down),
+          items: (categories ?? []).map((cat) {
+            return DropdownMenuItem(
+              value: cat,
+              child: Row(
+                children: [
+                  IconContainerWidget(
+                    categoryIcon: AppIcons.fromName(cat.iconName),
+                    size: 28,
+                    iconSize: 18,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(cat.name),
+                ],
+              ),
+            );
+          }).toList(),
+          onChanged: onCategoryChanged,
         ),
       ),
     );

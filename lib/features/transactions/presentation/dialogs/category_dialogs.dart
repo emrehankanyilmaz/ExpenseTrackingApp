@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import 'package:provider/provider.dart';
 import 'package:gider_takip/features/transactions/constants/app_icons_constants.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/common/icon_container_widget.dart';
@@ -7,18 +8,15 @@ import '../../constants/app_color_constans.dart';
 import '../providers/category_provider.dart';
 import '../../data/models/category_model.dart';
 
-class CategoryDialogs {
-  CategoryDialogs._();
-
-  static void showCategoryDialog(BuildContext context,
-      {CategoryModel? category}) {
-    final provider = context.read<CategoryProvider>();
+extension CategoryDialogs on BuildContext {
+  void showCategoryDialog({CategoryModel? category}) {
+    final provider = read<CategoryProvider>();
     final nameController = TextEditingController(text: category?.name ?? '');
-    String selectedIconName = category?.iconName ?? AppIcons.values[0].name;
-    int selectedType = category?.type ?? 0;
+    String selectedIconName = category?.iconName ?? AppIcons.values[0].iconName;
+    CategoryType selectedType = category?.type ?? CategoryType.expense;
 
     showDialog(
-      context: context,
+      context: this,
       builder: (ctx) => StatefulBuilder(
         builder: (ctx, setState) => AlertDialog(
           title:
@@ -48,14 +46,26 @@ class CategoryDialogs {
               child: Text('cancel'.tr()),
             ),
             ElevatedButton(
-              onPressed: () => _saveCategory(
-                ctx: ctx,
-                provider: provider,
-                category: category,
-                name: nameController.text.trim(),
-                iconName: selectedIconName,
-                type: selectedType,
-              ),
+              onPressed: () async {
+                if (nameController.text.trim().isEmpty) return;
+                if (category == null) {
+                  await provider.addCategory(
+                    name: nameController.text.trim(),
+                    iconName: selectedIconName,
+                    type: selectedType,
+                  );
+                } else {
+                  await provider.updateCategory(
+                    CategoryModel(
+                      id: category.id,
+                      name: nameController.text.trim(),
+                      iconName: selectedIconName,
+                      type: selectedType,
+                    ),
+                  );
+                }
+                if (ctx.mounted) Navigator.pop(ctx);
+              },
               child: Text('save'.tr()),
             ),
           ],
@@ -64,9 +74,9 @@ class CategoryDialogs {
     );
   }
 
-  static void showDeleteConfirmDialog(BuildContext context, int id) {
+  void showDeleteConfirmDialog(int id) {
     showDialog(
-      context: context,
+      context: this,
       builder: (ctx) => AlertDialog(
         title: Text('deleteCategory'.tr()),
         content: Text('deleteConfirmation'.tr()),
@@ -78,7 +88,7 @@ class CategoryDialogs {
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: AppColor.colorRed),
             onPressed: () async {
-              await context.read<CategoryProvider>().deleteCategory(id);
+              await read<CategoryProvider>().deleteCategory(id);
               if (ctx.mounted) Navigator.pop(ctx);
             },
             child: Text(
@@ -90,36 +100,14 @@ class CategoryDialogs {
       ),
     );
   }
-
-  static Future<void> _saveCategory({
-    required BuildContext ctx,
-    required CategoryProvider provider,
-    required CategoryModel? category,
-    required String name,
-    required String iconName,
-    required int type,
-  }) async {
-    if (name.isEmpty) return;
-
-    if (category == null) {
-      await provider.addCategory(name: name, iconName: iconName, type: type);
-    } else {
-      await provider.updateCategory(
-        CategoryModel(
-            id: category.id, name: name, iconName: iconName, type: type),
-      );
-    }
-
-    if (ctx.mounted) Navigator.pop(ctx);
-  }
 }
 
 class TypeToggle extends StatelessWidget {
   const TypeToggle(
       {super.key, required this.selectedType, required this.onTypeChanged});
 
-  final int selectedType;
-  final void Function(int) onTypeChanged;
+  final CategoryType selectedType;
+  final void Function(CategoryType) onTypeChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -131,15 +119,17 @@ class TypeToggle extends StatelessWidget {
       child: Row(
         children: [
           TypeToggleButton(
-              label: 'expense'.tr(),
-              type: 0,
-              selectedType: selectedType,
-              onTap: () => onTypeChanged(0)),
+            label: 'expense'.tr(),
+            type: CategoryType.expense,
+            selectedType: selectedType,
+            onTap: () => onTypeChanged(CategoryType.expense),
+          ),
           TypeToggleButton(
-              label: 'income'.tr(),
-              type: 1,
-              selectedType: selectedType,
-              onTap: () => onTypeChanged(1)),
+            label: 'income'.tr(),
+            type: CategoryType.income,
+            selectedType: selectedType,
+            onTap: () => onTypeChanged(CategoryType.income),
+          ),
         ],
       ),
     );
@@ -156,14 +146,13 @@ class TypeToggleButton extends StatelessWidget {
   });
 
   final String label;
-  final int type;
-  final int selectedType;
+  final CategoryType type;
+  final CategoryType selectedType;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final isSelected = selectedType == type;
-
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -230,9 +219,9 @@ class IconPicker extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: AppIcons.values.map((categoryIcon) {
-            final isSelected = selectedIconName == categoryIcon.name;
+            final isSelected = selectedIconName == categoryIcon.iconName;
             return GestureDetector(
-              onTap: () => onIconSelected(categoryIcon.name),
+              onTap: () => onIconSelected(categoryIcon.iconName),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 decoration: BoxDecoration(
@@ -242,10 +231,7 @@ class IconPicker extends StatelessWidget {
                       : null,
                 ),
                 child: IconContainerWidget(
-                  categoryIcon: categoryIcon,
-                  size: 52,
-                  iconSize: 28,
-                ),
+                    categoryIcon: categoryIcon, size: 52, iconSize: 28),
               ),
             );
           }).toList(),

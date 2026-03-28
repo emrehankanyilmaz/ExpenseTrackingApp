@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/constants/app_color_constans.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 import 'package:provider/provider.dart';
 import '../../providers/transaction_provider.dart';
 
@@ -30,13 +31,10 @@ class WeeklyCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               BaseText.titleLarge(context, data: 'expenses'.tr()),
-              Container(
+              CustomContainer(
+                  border: Border.all(color: AppColor.colorGrey300),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColor.colorGrey300),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
                   child: BaseText.labelMedium(context, data: 'thisWeek'.tr())),
             ],
           ),
@@ -55,13 +53,10 @@ class WeeklyCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isMax)
-                        Container(
+                        CustomContainer(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppColor.colorBlue,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
+                          color: AppColor.colorBlue,
                           child: BaseText.labelSmall(
                             context,
                             data:
@@ -81,13 +76,11 @@ class WeeklyCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        e.key,
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: AppColor.colorGrey,
-                        ),
-                      ),
+                      BaseText.labelSmall(
+                        context,
+                        data: e.key,
+                        color: AppColor.colorGrey,
+                      )
                     ],
                   ),
                 );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 
 import '../../../constants/app_color_constans.dart';
 
@@ -15,25 +16,20 @@ class AmountFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
+    return CustomContainer(
         color: AppColor.colorGrey100,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColor.colorGrey300),
-      ),
-      child: TextField(
-        controller: controller,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: hint,
-          hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
-          isDense: true,
-          contentPadding: const EdgeInsets.symmetric(vertical: 10),
-        ),
-        onChanged: onChanged,
-      ),
-    );
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: TextField(
+          controller: controller,
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: hint,
+            hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+          ),
+          onChanged: onChanged,
+        ));
   }
 }

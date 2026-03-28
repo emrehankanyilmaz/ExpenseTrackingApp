@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 
 class FilterProvider extends ChangeNotifier {
   DateTime? startDate;
@@ -8,9 +9,9 @@ class FilterProvider extends ChangeNotifier {
   double? maxAmount;
 
   int? categoryId;
-  int? type;
+  CategoryType? type;
 
-  void setType(int? value) {
+  void setType(CategoryType? value) {
     type = value;
     notifyListeners();
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import '../../constants/days_months_constants.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/category_model.dart';
@@ -9,7 +10,7 @@ class TransactionProvider extends ChangeNotifier {
   List<TransactionModel> _transactions = [];
   List<TransactionModel> get transactions => _transactions;
   int selectedIndex = 0;
-  int selectedType = 0;
+  CategoryType selectedType = CategoryType.expense;
   CategoryModel? selectedCategory;
   DateTime selectedDate = DateTime.now();
 
@@ -18,16 +19,16 @@ class TransactionProvider extends ChangeNotifier {
   double? filterMinAmount;
   double? filterMaxAmount;
   int? filterCategoryId;
-  int? filterType;
+  CategoryType? filterType;
   int _page = 1;
   static const int _pageSize = 10;
 
   double get totalIncome => _transactions
-      .where((t) => t.type == 1)
+      .where((t) => t.type == CategoryType.income)
       .fold(0, (sum, t) => sum + t.amount);
 
   double get totalExpense => _transactions
-      .where((t) => t.type == 0)
+      .where((t) => t.type == CategoryType.expense)
       .fold(0, (sum, t) => sum + t.amount);
 
   double get netBalance => totalIncome - totalExpense;
@@ -40,7 +41,7 @@ class TransactionProvider extends ChangeNotifier {
     final Map<String, double> result = {for (var d in days) d: 0};
     final now = DateTime.now();
     for (var t in _transactions) {
-      if (t.type == 0) {
+      if (t.type == CategoryType.expense) {
         final diff = now.difference(t.transactionDate).inDays;
         if (diff < 7) {
           final dayName = days[t.transactionDate.weekday % 7];
@@ -130,7 +131,7 @@ class TransactionProvider extends ChangeNotifier {
     double? minAmount,
     double? maxAmount,
     int? categoryId,
-    int? type,
+    CategoryType? type,
   }) {
     filterStartDate = startDate;
     filterEndDate = endDate;
@@ -147,7 +148,7 @@ class TransactionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedType(int type) {
+  void setSelectedType(CategoryType type) {
     selectedType = type;
     selectedCategory = null;
     notifyListeners();
@@ -164,7 +165,7 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   void resetForm() {
-    selectedType = 0;
+    selectedType = CategoryType.expense;
     selectedCategory = null;
     selectedDate = DateTime.now();
   }

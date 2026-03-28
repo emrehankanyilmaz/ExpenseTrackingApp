@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/category_provider.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/transaction_provider.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/add_transaction/transaction_save_button.dart';
@@ -22,7 +23,7 @@ class AddTransactionBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final transactionProvider = context.watch<TransactionProvider>();
     final categoryProvider = context.watch<CategoryProvider>();
-    final categories = transactionProvider.selectedType == 0
+    final categories = transactionProvider.selectedType == CategoryType.expense
         ? categoryProvider.expenseCategories
         : categoryProvider.incomeCategories;
 

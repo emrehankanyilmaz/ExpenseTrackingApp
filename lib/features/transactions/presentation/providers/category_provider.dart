@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import '../../data/models/category_model.dart';
 import '../../data/repositories/category_repository.dart';
 
@@ -9,11 +10,13 @@ class CategoryProvider extends ChangeNotifier {
 
   List<CategoryModel> get categories => _categories;
 
-  List<CategoryModel> get expenseCategories =>
-      _categories.where((c) => c.type == 0).toList();
+  List<CategoryModel> get expenseCategories => _categories
+      .where((category) => category.type == CategoryType.expense)
+      .toList();
 
-  List<CategoryModel> get incomeCategories =>
-      _categories.where((c) => c.type == 1).toList();
+  List<CategoryModel> get incomeCategories => _categories
+      .where((category) => category.type == CategoryType.income)
+      .toList();
 
   CategoryModel? getCategoryById(int id) {
     try {
@@ -31,9 +34,9 @@ class CategoryProvider extends ChangeNotifier {
   Future<void> addCategory({
     required String name,
     required String iconName,
-    required int type,
+    required CategoryType type,
   }) async {
-    await _categoryRepo.insertCategory(name, iconName, type == 1);
+    await _categoryRepo.insertCategory(name, iconName, type);
     await loadCategories();
   }
 

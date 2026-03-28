@@ -1,3 +1,4 @@
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:gider_takip/core/database/base_model.dart';
 
@@ -15,13 +16,20 @@ class TransactionModel extends BaseModel {
   });
   factory TransactionModel.fromMap(Map<String, dynamic> map) =>
       _$TransactionModelFromJson(map);
-  final int type;
+
+  @JsonKey(fromJson: _typeFromInt, toJson: _typeToInt)
+  final CategoryType type;
   final int categoryId;
   final double amount;
   @JsonKey(fromJson: _dateFromString, toJson: _dateToString)
   final DateTime transactionDate;
   final String description;
   final int? id;
+
+  static CategoryType _typeFromInt(int value) =>
+      CategoryType.values.firstWhere((e) => e.value == value);
+
+  static int _typeToInt(CategoryType type) => type.value;
 
   @override
   Map<String, dynamic> toMap() => _$TransactionModelToJson(this);
