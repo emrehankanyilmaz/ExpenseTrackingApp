@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/constants/app_color_constans.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 
 class DateButtonWidget extends StatelessWidget {
   const DateButtonWidget({
@@ -14,13 +16,10 @@ class DateButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
+      child: CustomContainer(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.grey.shade100,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
+        color: AppColor.colorGrey100,
+        border: Border.all(color: AppColor.colorGrey300),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

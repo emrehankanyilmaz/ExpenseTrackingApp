@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/constants/app_color_constans.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/transaction/amount_field.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/transaction/category_chip.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/transaction/date_button.dart';
@@ -61,14 +63,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   Widget build(BuildContext context) {
     return Consumer2<FilterProvider, CategoryProvider>(
       builder: (_, filter, categoryProvider, __) {
-        return Container(
+        return CustomContainer(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-          ),
+          borderRadius: 24,
+          border: null,
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: SingleChildScrollView(
@@ -77,13 +77,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Center(
-                    child: Container(
+                    child: CustomContainer(
                       width: 40,
                       height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
+                      borderRadius: 2,
+                      color: Colors.grey.shade300,
+                      child: const SizedBox(),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -114,15 +113,15 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                       const SizedBox(width: 8),
                       TypeChipWidget(
                           label: 'income'.tr(),
-                          isSelected: filter.type == 1,
+                          isSelected: filter.type == CategoryType.income,
                           color: Colors.green,
-                          onTap: () => filter.setType(1)),
+                          onTap: () => filter.setType(CategoryType.income)),
                       const SizedBox(width: 8),
                       TypeChipWidget(
                           label: 'expense'.tr(),
-                          isSelected: filter.type == 0,
+                          isSelected: filter.type == CategoryType.expense,
                           color: Colors.red,
-                          onTap: () => filter.setType(0)),
+                          onTap: () => filter.setType(CategoryType.expense)),
                     ],
                   ),
                   const SizedBox(height: 20),

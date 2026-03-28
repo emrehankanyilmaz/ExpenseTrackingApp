@@ -1,5 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/extensions/transaction_provider_extension.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 import '../../../constants/app_color_constans.dart';
 import '../../providers/transaction_provider.dart';
 
@@ -24,27 +27,28 @@ class SummaryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '${provider.netBalance >= 0 ? '' : '${'minus'.tr()} '}${'currency'.tr()} ${provider.netBalance.abs().toStringAsFixed(0)}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: provider.netBalance >= 0
-                      ? AppColor.colorGreen
-                      : AppColor.colorRed,
-                ),
-              ),
+              BaseText.titleLarge(
+                context,
+                data: provider.formattedNetBalance,
+                color: provider.netBalance >= 0
+                    ? AppColor.colorGreen
+                    : AppColor.colorRed,
+              )
             ],
           ),
           const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: _buildIncomeBox(),
+                child: BuildIncomeBox(
+                  buildIncomeBoxProvider: provider,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: _buildExpenseBox(),
+                child: BuildExpenseBox(
+                  buildExpenseBoxprovider: provider,
+                ),
               ),
             ],
           ),
@@ -52,14 +56,11 @@ class SummaryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'budgetStatus'.tr(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(
-                '${'currency'.tr()} ${provider.netBalance.toStringAsFixed(0)} | Kaldı',
-                style: const TextStyle(color: AppColor.colorGrey, fontSize: 12),
-              ),
+              BaseText.bodyMedium(context, data: 'budgetStatus'.tr()),
+              BaseText.bodySmall(
+                context,
+                data: provider.formattedBudgetStatus,
+              )
             ],
           ),
           const SizedBox(height: 8),
@@ -76,61 +77,68 @@ class SummaryCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            '${'currency'.tr()} ${provider.totalExpense.toStringAsFixed(0)} / ${'currency'.tr()} ${provider.totalIncome.toStringAsFixed(0)}',
-            style: const TextStyle(color: AppColor.colorGrey, fontSize: 12),
+          BaseText.bodySmall(
+            context,
+            data: provider.formattedBudgetDetail,
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildIncomeBox() {
-    return Container(
+class BuildIncomeBox extends StatelessWidget {
+  const BuildIncomeBox({super.key, required this.buildIncomeBoxProvider});
+
+  final TransactionProvider buildIncomeBoxProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainer(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColor.colorGreen,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      color: AppColor.colorGreen,
       child: Column(
         children: [
-          Text(
-            '${'currency'.tr()} ${provider.totalIncome.toStringAsFixed(0)}',
-            style: const TextStyle(
-              color: AppColor.colorWhite,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+          BaseText.titleLarge(
+            context,
+            data: buildIncomeBoxProvider.formattedTotalIncome,
+            color: AppColor.colorWhite,
           ),
-          Text(
-            'income'.tr(),
-            style: const TextStyle(color: AppColor.colorWhite70, fontSize: 12),
+          BaseText.labelMedium(
+            context,
+            data: 'income'.tr(),
+            color: AppColor.colorWhite,
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildExpenseBox() {
-    return Container(
+class BuildExpenseBox extends StatelessWidget {
+  const BuildExpenseBox({
+    super.key,
+    required this.buildExpenseBoxprovider,
+  });
+
+  final TransactionProvider buildExpenseBoxprovider;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainer(
       padding: const EdgeInsets.symmetric(vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColor.colorRed,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      color: AppColor.colorRed,
       child: Column(
         children: [
-          Text(
-            '${'minus'.tr()} ${'currency'.tr()} ${provider.totalExpense.toStringAsFixed(0)}',
-            style: const TextStyle(
-              color: AppColor.colorWhite,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+          BaseText.titleLarge(
+            context,
+            data: buildExpenseBoxprovider.formattedTotalExpense,
+            color: AppColor.colorWhite,
           ),
-          Text(
-            'expense'.tr(),
-            style: const TextStyle(color: AppColor.colorWhite70, fontSize: 12),
+          BaseText.labelMedium(
+            context,
+            data: 'expense'.tr(),
+            color: AppColor.colorWhite,
           ),
         ],
       ),

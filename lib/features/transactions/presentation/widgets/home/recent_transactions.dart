@@ -1,8 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/constants/app_icons_constants.dart';
+import 'package:gider_takip/features/transactions/data/models/category_type.dart';
+import 'package:gider_takip/features/transactions/extensions/transaction_extension.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/category_provider.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/transaction_provider.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/common/icon_container_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/app_color_constans.dart';
@@ -22,30 +26,31 @@ class RecentTransactions extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('lastTransactions'.tr(),
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const TransactionPage()),
-                );
-              },
-              child: Text('seeAll'.tr(),
-                  style: const TextStyle(color: AppColor.colorBlue)),
+            BaseText.titleLarge(
+              context,
+              data: 'lastTransactions'.tr(),
             ),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const TransactionPage()),
+                  );
+                },
+                child: BaseText.titleSmall(
+                  context,
+                  data: 'seeAll'.tr(),
+                  color: AppColor.colorBlue,
+                )),
           ],
         ),
         ...transactionProvider.recentTransactions.map((t) {
           final category = categoryProvider.getCategoryById(t.categoryId);
           final categoryIcon = AppIcons.fromName(category?.iconName ?? '');
-          return Container(
+          return CustomContainer(
             margin: const EdgeInsets.only(bottom: 8),
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                color: AppColor.colorWhite,
-                borderRadius: BorderRadius.circular(12)),
+            color: AppColor.colorWhite,
             child: Row(
               children: [
                 IconContainerWidget(
@@ -58,12 +63,12 @@ class RecentTransactions extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(category?.name ?? 'unknownCategory'.tr(),
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      BaseText.bodyMedium(
+                        context,
+                        data: category?.name ?? 'unknownCategory'.tr(),
+                      ),
                       if (t.description.isNotEmpty)
-                        Text(t.description,
-                            style: const TextStyle(
-                                color: AppColor.colorGrey, fontSize: 12)),
+                        BaseText.bodySmall(context, data: t.description)
                     ],
                   ),
                 ),
@@ -71,10 +76,10 @@ class RecentTransactions extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${t.type == 0 ? '${'minus'.tr()} ' : ''}${'currency'.tr()} ${t.amount.toStringAsFixed(0)}',
+                      t.formattedAmount,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: t.type == 0
+                          color: t.type == CategoryType.expense
                               ? AppColor.colorRed
                               : AppColor.colorGreen),
                     ),

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_color_constans.dart';
 import '../dialogs/category_dialogs.dart';
@@ -20,26 +21,20 @@ class CategoryPage extends StatelessWidget {
         backgroundColor: AppColor.colorGrey100,
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          'categories'.tr(),
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, color: AppColor.colorBlack),
-        ),
+        title: BaseText.displaySmall(context, data: 'categories'.tr()),
       ),
       body: Column(
         children: [
           const SizedBox(height: 12),
           AddCategoryButton(
-            onTap: () => CategoryDialogs.showCategoryDialog(context),
+            onTap: () => context.showCategoryDialog(),
           ),
           const SizedBox(height: 16),
           Expanded(
             child: CategoryList(
               categories: categories,
-              onEdit: (cat) =>
-                  CategoryDialogs.showCategoryDialog(context, category: cat),
-              onDelete: (id) =>
-                  CategoryDialogs.showDeleteConfirmDialog(context, id),
+              onEdit: (cat) => context.showCategoryDialog(category: cat),
+              onDelete: (id) => context.showDeleteConfirmDialog(id),
             ),
           ),
         ],

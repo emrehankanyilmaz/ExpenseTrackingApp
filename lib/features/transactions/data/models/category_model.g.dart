@@ -10,7 +10,7 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
     CategoryModel(
       name: json['name'] as String,
       iconName: json['icon'] as String,
-      type: (json['type'] as num).toInt(),
+      type: CategoryModel._typeFromInt((json['type'] as num).toInt()),
       id: (json['id'] as num?)?.toInt(),
     );
 
@@ -18,6 +18,6 @@ Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
     <String, dynamic>{
       'name': instance.name,
       'icon': instance.iconName,
-      'type': instance.type,
+      'type': CategoryModel._typeToInt(instance.type),
       'id': instance.id,
     };

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/category/category_list_item.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/common/custom_container.dart';
 import '../../../constants/app_color_constans.dart';
 import '../../../data/models/category_model.dart';
 
@@ -18,11 +19,8 @@ class CategoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColor.colorWhite,
-        borderRadius: BorderRadius.circular(16),
-      ),
+    return CustomContainer(
+      color: AppColor.colorWhite,
       child: categories.isEmpty
           ? Center(
               child: Text(

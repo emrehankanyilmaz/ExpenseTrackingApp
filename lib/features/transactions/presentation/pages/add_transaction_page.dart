@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/presentation/pages/add_transaction_body_page.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_color_constans.dart';
 import '../providers/transaction_provider.dart';
@@ -38,14 +39,7 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          'newTransaction'.tr(),
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: AppColor.colorBlack,
-            fontSize: 20,
-          ),
-        ),
+        title: BaseText.displaySmall(context, data: 'newTransaction'.tr()),
       ),
       body: AddTransactionBody(
         amountController: amountController,
