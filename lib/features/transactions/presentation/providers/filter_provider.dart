@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gider_takip/features/transactions/data/models/category_type.dart';
+import 'package:gider_takip/features/transactions/data/models/date_filter.dart';
 
 class FilterProvider extends ChangeNotifier {
+  DateFilter dateFilter = DateFilter.thisWeek;
+  DateFilter budgetFilter = DateFilter.thisWeek;
   DateTime? startDate;
   DateTime? endDate;
 
@@ -10,6 +13,16 @@ class FilterProvider extends ChangeNotifier {
 
   int? categoryId;
   CategoryType? type;
+
+  void setWeeklyFilter(DateFilter filter) {
+    dateFilter = filter;
+    notifyListeners();
+  }
+
+  void setBudgetFilter(DateFilter filter) {
+    budgetFilter = filter;
+    notifyListeners();
+  }
 
   void setType(CategoryType? value) {
     type = value;
@@ -44,8 +57,6 @@ class FilterProvider extends ChangeNotifier {
   void reset() {
     startDate = null;
     endDate = null;
-    minAmount = null;
-    maxAmount = null;
     categoryId = null;
     type = null;
     notifyListeners();

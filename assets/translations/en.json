@@ -47,5 +47,8 @@
   "settings": "Settings",
   "transactions": "Transactions",
   "noTransaction": "No Transaction Found",
-  "type": "Type"
+  "type": "Type",
+  "thisMonth": "This Month",
+  "lastThreeMonths": "Last 3 Months",
+  "noData": "No Data Found"
 }

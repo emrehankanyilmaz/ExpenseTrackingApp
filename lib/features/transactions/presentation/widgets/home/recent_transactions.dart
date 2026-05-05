@@ -32,9 +32,15 @@ class RecentTransactions extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  transactionProvider.setSelectedIndex(3);
+                  Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const TransactionPage()),
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          const TransactionPage(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
                   );
                 },
                 child: BaseText.titleSmall(

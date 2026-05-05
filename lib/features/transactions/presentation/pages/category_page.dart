@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/presentation/providers/transaction_provider.dart';
 import 'package:gider_takip/features/transactions/presentation/widgets/base_text.dart';
+import 'package:gider_takip/features/transactions/presentation/widgets/home/bottom_navigation.dart';
 import 'package:provider/provider.dart';
 import '../../constants/app_color_constans.dart';
 import '../dialogs/category_dialogs.dart';
@@ -13,6 +15,7 @@ class CategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transactionProvider = context.watch<TransactionProvider>();
     final categories = context.watch<CategoryProvider>().categories;
 
     return Scaffold(
@@ -39,6 +42,7 @@ class CategoryPage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigation(provider: transactionProvider),
     );
   }
 }
