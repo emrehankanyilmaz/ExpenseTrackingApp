@@ -91,7 +91,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                     children: [
                       BaseText.headlineSmall(context, data: 'filter'.tr()),
                       TextButton(
-                        onPressed: () => filter.reset(),
+                        onPressed: () {
+                          filter.reset();
+                          minController.clear();
+                          maxController.clear();
+                        },
                         child: BaseText.titleSmall(
                           context,
                           data: 'clear'.tr(),

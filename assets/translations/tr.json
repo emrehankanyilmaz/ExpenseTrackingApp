@@ -49,5 +49,8 @@
   "homePage": "Ana Sayfa",
   "settings": "Ayarlar",
   "transactions": "İşlemler",
-  "noTransaction": "İşlem bulunamadı"
+  "noTransaction": "İşlem bulunamadı",
+  "thisMonth": "Bu Ay",
+  "lastThreeMonths": "Son 3 Ay",
+  "noData": "Veri bulunamadı"
 }

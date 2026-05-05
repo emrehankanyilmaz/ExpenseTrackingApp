@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/presentation/pages/home_page.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/transaction_provider.dart';
 import '../../../constants/app_color_constans.dart';
 import '../../pages/add_transaction_page.dart';
@@ -14,13 +15,6 @@ class BottomNavigation extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: provider.selectedIndex,
       onTap: (i) {
-        if (i == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const CategoryPage()),
-          );
-          return;
-        }
         if (i == 2) {
           Navigator.push(
             context,
@@ -28,14 +22,34 @@ class BottomNavigation extends StatelessWidget {
           );
           return;
         }
-        if (i == 3) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const TransactionPage()),
-          );
-          return;
+        if (i == provider.selectedIndex) return;
+        Widget destination;
+        switch (i) {
+          case 0:
+            destination = const HomePage();
+            break; // Ana sayfanızın adı
+          case 1:
+            destination = const CategoryPage();
+            break;
+          case 2:
+            destination = const AddTransactionPage();
+            break;
+          case 3:
+            destination = const TransactionPage();
+            break;
+          default:
+            destination = const HomePage();
         }
+
         provider.setSelectedIndex(i);
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => destination,
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
       },
       type: BottomNavigationBarType.fixed,
       selectedItemColor: AppColor.colorBlue,
