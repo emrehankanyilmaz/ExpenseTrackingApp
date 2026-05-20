@@ -1,5 +1,7 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gider_takip/features/transactions/data/repositories/transaction_repository.dart';
 import 'package:gider_takip/features/transactions/presentation/providers/filter_provider.dart';
 import 'package:gider_takip/features/transactions/theme/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +16,16 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   runApp(
-    EasyLocalization(
-      supportedLocales: const [Locale('tr'), Locale('en')],
-      path: 'assets/translations',
-      fallbackLocale: const Locale('tr'),
-      startLocale: const Locale('tr'),
-      child: const MyApp(),
+    DevicePreview(
+      builder: (context) {
+        return EasyLocalization(
+          supportedLocales: const [Locale('tr'), Locale('en')],
+          path: 'assets/translations',
+          fallbackLocale: const Locale('tr'),
+          startLocale: const Locale('tr'),
+          child: const MyApp(),
+        );
+      },
     ),
   );
 }
@@ -34,7 +40,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (_) => CategoryProvider()..loadCategories()),
         ChangeNotifierProvider(
-            create: (_) => TransactionProvider()..loadTransactions()),
+            create: (_) => TransactionProvider(TransactionRepository())
+              ..loadTransactions()),
         ChangeNotifierProvider(
           create: (_) => FilterProvider(),
         ),
@@ -43,7 +50,8 @@ class MyApp extends StatelessWidget {
         scaffoldMessengerKey: scaffoldMessengerKey,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
-        locale: context.locale,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         debugShowCheckedModeBanner: false,
         title: 'Gider Takip',
         theme: AppTheme.light,
