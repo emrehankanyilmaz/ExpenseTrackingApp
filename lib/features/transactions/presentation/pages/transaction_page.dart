@@ -42,6 +42,7 @@ class TransactionPage extends StatelessWidget {
                   top: 8,
                   right: 8,
                   child: Container(
+                    key: const Key('active_filter_dot'),
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(

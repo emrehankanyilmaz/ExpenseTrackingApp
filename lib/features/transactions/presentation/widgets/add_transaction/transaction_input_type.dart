@@ -76,6 +76,8 @@ class BuildAmount extends StatelessWidget {
       border: Border.all(color: AppColor.colorGrey300),
       child: Row(
         children: [
+          const Icon(Icons.attach_money),
+          const SizedBox(width: 4),
           Text(
             "currency".tr(),
             style: const TextStyle(

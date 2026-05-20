@@ -7,9 +7,12 @@ import '../../data/models/category_model.dart';
 import '../../data/repositories/transaction_repository.dart';
 
 class TransactionProvider extends ChangeNotifier {
-  final TransactionRepository _transactionRepo = TransactionRepository();
+  TransactionProvider(this._transactionRepo);
+  final TransactionRepository _transactionRepo;
+
   List<TransactionModel> _transactions = [];
   List<TransactionModel> get transactions => _transactions;
+
   int selectedIndex = 0;
   CategoryType selectedType = CategoryType.expense;
   CategoryModel? selectedCategory;
@@ -44,13 +47,16 @@ class TransactionProvider extends ChangeNotifier {
     switch (filter) {
       case DateFilter.thisWeek:
         startDate = now.subtract(const Duration(days: 7));
+        break;
       case DateFilter.thisMonth:
         startDate = DateTime(now.year, now.month, 1);
+        break;
       case DateFilter.lastThreeMonths:
         startDate = DateTime(now.year, now.month - 2, 1);
+        break;
     }
     return _transactions
-        .where((t) => t.transactionDate.isAfter(startDate))
+        .where((t) => !t.transactionDate.isBefore(startDate))
         .toList();
   }
 
@@ -71,13 +77,19 @@ class TransactionProvider extends ChangeNotifier {
     final Map<String, double> expensesByDay = {
       for (var day in weekDays) day: 0
     };
-    final weekAgo = now.subtract(const Duration(days: 7));
+
+    // Haftanın başlangıcını hesapla (Pazartesi)
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(const Duration(days: 6));
 
     for (var transaction in _transactions) {
       final isExpense = transaction.type == CategoryType.expense;
-      final isInRange = transaction.transactionDate.isAfter(weekAgo);
+      final isInRange = transaction.transactionDate
+              .isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
+          transaction.transactionDate
+              .isBefore(endOfWeek.add(const Duration(seconds: 1)));
       if (isExpense && isInRange) {
-        final dayName = weekDays[transaction.transactionDate.weekday % 7];
+        final dayName = weekDays[transaction.transactionDate.weekday - 1];
         expensesByDay[dayName] =
             (expensesByDay[dayName] ?? 0) + transaction.amount;
       }
@@ -114,8 +126,8 @@ class TransactionProvider extends ChangeNotifier {
     final Map<String, double> expensesByMonth = {};
 
     for (var monthOffset = 2; monthOffset >= 0; monthOffset--) {
-      var monthNumber = now.month - monthOffset;
-      expensesByMonth[monthNames[monthNumber - 1]] = 0;
+      var date = DateTime(now.year, now.month - monthOffset, 1);
+      expensesByMonth[monthNames[date.month - 1]] = 0;
     }
 
     final threeMonthsAgo = DateTime(now.year, now.month - 2, 1);
@@ -227,6 +239,10 @@ class TransactionProvider extends ChangeNotifier {
   void setSelectedIndex(int index) {
     selectedIndex = index;
     notifyListeners();
+  }
+
+  void setTransactionsForTest(List<TransactionModel> list) {
+    _transactions = list;
   }
 
   void setSelectedType(CategoryType type) {
